@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostico Express - Proteccion de Datos | Ley 21.719</title>
+    <style>
+        :root {
+            --primary: #0066cc;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --success: #28a745;
+            --dark: #1e1e2e;
+            --gray: #6c757d;
+            --light: #f5f5fa;
+            --white: #ffffff;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #333; line-height: 1.6; background: var(--light);
+        }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .header {
+            background: var(--dark); color: var(--white); padding: 20px 0; margin-bottom: 30px;
+        }
+        .header .container { display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 1.3rem; font-weight: 600; }
+        .header .badge { background: var(--primary); padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; }
+        .card {
+            background: var(--white); border-radius: 8px; padding: 24px;
+            margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .card h2 { font-size: 1.2rem; margin-bottom: 16px; color: var(--dark); }
+        .form-group { margin-bottom: 18px; }
+        .form-group > label {
+            display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.95rem;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group select {
+            width: 100%; padding: 10px 12px; border: 1px solid #ddd;
+            border-radius: 6px; font-size: 0.95rem;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary); outline: none;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .radio-group {
+            display: flex; flex-direction: column; gap: 8px; margin-top: 6px;
+        }
+        .radio-group label {
+            font-weight: 400; display: flex; align-items: flex-start; gap: 8px;
+            padding: 8px 12px; border: 1px solid #eee; border-radius: 6px;
+            cursor: pointer; transition: background 0.15s;
+        }
+        .radio-group label:hover { background: var(--light); }
+        .radio-group input[type="radio"] { margin-top: 3px; }
+        .dimension { border-left: 3px solid var(--primary); padding-left: 16px; margin-bottom: 24px; }
+        .dimension.peso-muy-alto { border-color: var(--danger); }
+        .dimension.peso-alto { border-color: var(--warning); }
+        .dimension.peso-medio { border-color: var(--primary); }
+        .dimension-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+        .dimension-weight { font-size: 0.8rem; color: var(--gray); margin-bottom: 12px; }
+        .btn {
+            display: inline-block; padding: 12px 28px; border: none; border-radius: 6px;
+            font-size: 1rem; font-weight: 600; cursor: pointer; text-decoration: none;
+            transition: opacity 0.15s;
+        }
+        .btn:hover { opacity: 0.9; }
+        .btn-primary { background: var(--primary); color: var(--white); }
+        .btn-block { display: block; width: 100%; text-align: center; }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* Results */
+        .result-banner {
+            text-align: center; padding: 30px; border-radius: 8px; margin-bottom: 20px;
+        }
+        .result-banner.alto { background: #fde8ea; border: 2px solid var(--danger); }
+        .result-banner.medio { background: #fff8e1; border: 2px solid var(--warning); }
+        .result-banner.bajo { background: #e8f5e9; border: 2px solid var(--success); }
+        .result-banner h2 { font-size: 1.5rem; margin-bottom: 8px; }
+        .progress-bar {
+            height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden; margin-top: 4px;
+        }
+        .progress-bar .fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+        .alerta-critica {
+            border-left: 4px solid var(--danger); padding: 16px; margin-bottom: 12px;
+            background: #fff5f5;
+        }
+        .hidden { display: none; }
+
+        /* Print styles */
+        @media print {
+            body { background: white; }
+            .header { margin-bottom: 10px; }
+            .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+            .no-print { display: none !important; }
+            .result-banner { break-inside: avoid; }
+        }
+        @media (max-width: 600px) {
+            .container { padding: 12px; }
+            .card { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>The Wise Monkey Project</h1>
+            <span class="badge" id="headerBadge">Diagnostico Express</span>
+        </div>
+    </div>
+
+    <!-- ==================== FORMULARIO ==================== -->
+    <div class="container" id="formSection">
+        <div class="card">
+            <h2>Diagnostico Express de Proteccion y Gobernanza de Datos</h2>
+            <p>Evalua en 10 minutos el nivel de preparacion de tu organizacion frente a la Ley 21.719 de Proteccion de Datos Personales.</p>
+            <p style="color: var(--gray); font-size: 0.9rem; margin-top: 8px;">
+                Este diagnostico es confidencial, no constituye una auditoria legal y esta pensado como una herramienta de orientacion inicial.
+            </p>
+        </div>
+
+        <form id="diagnosticoForm" onsubmit="return procesarDiagnostico(event)">
+
+            <!-- DATOS DE CONTACTO -->
+            <div class="card">
+                <h2>Datos de Contacto</h2>
+                <div class="form-group">
+                    <label for="nombre_contacto">Nombre completo *</label>
+                    <input type="text" id="nombre_contacto" name="nombre_contacto" required minlength="2" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email corporativo *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="empresa">Empresa *</label>
+                    <input type="text" id="empresa" name="empresa" required minlength="2" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="cargo">Cargo</label>
+                    <input type="text" id="cargo" name="cargo" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="tamano">Tamano de la empresa *</label>
+                    <select id="tamano" name="tamano" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="micro_pyme">Micro/Pyme (1-49 empleados)</option>
+                        <option value="mediana">Mediana (50-199 empleados)</option>
+                        <option value="grande">Grande (200+ empleados)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="sector">Sector *</label>
+                    <select id="sector" name="sector" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="fintech">Fintech / Financiero</option>
+                        <option value="salud">Salud</option>
+                        <option value="retail">Retail / Comercio</option>
+                        <option value="educacion">Educacion</option>
+                        <option value="servicios">Servicios</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- DIMENSION 1: GOBERNANZA -->
+            <div class="card">
+                <div class="dimension peso-muy-alto">
+                    <div class="dimension-title">Dimension 1: Gobernanza y Responsabilidad</div>
+                    <div class="dimension-weight">Peso: MUY ALTO</div>
+                    <div class="form-group">
+                        <label>1. Existe un responsable formal de proteccion de datos en la organizacion? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p1_1" value="0" required> Si, claramente definido</label>
+                            <label><input type="radio" name="p1_1" value="5"> Existe informalmente</label>
+                            <label><input type="radio" name="p1_1" value="15"> No existe</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>2. La alta direccion esta involucrada en decisiones sobre datos? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p1_2" value="0" required> Si, regularmente</label>
+                            <label><input type="radio" name="p1_2" value="5"> Solo en casos puntuales</label>
+                            <label><input type="radio" name="p1_2" value="10"> No</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>3. Existen lineamientos internos claros sobre el uso de datos? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p1_3" value="0" required> Si, documentados y conocidos</label>
+                            <label><input type="radio" name="p1_3" value="5"> Parciales o poco conocidos</label>
+                            <label><input type="radio" name="p1_3" value="10"> No existen</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIMENSION 2: BASES LEGALES -->
+            <div class="card">
+                <div class="dimension peso-muy-alto">
+                    <div class="dimension-title">Dimension 2: Bases Legales y Transparencia</div>
+                    <div class="dimension-weight">Peso: MUY ALTO</div>
+                    <div class="form-group">
+                        <label>4. Pueden justificar por que usan los datos que recolectan? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p2_1" value="0" required> Si, claramente</label>
+                            <label><input type="radio" name="p2_1" value="10"> En algunos casos</label>
+                            <label><input type="radio" name="p2_1" value="20"> No</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>5. El consentimiento de los usuarios es explicito y demostrable? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p2_2" value="0" required> Si</label>
+                            <label><input type="radio" name="p2_2" value="10"> No siempre / no documentado</label>
+                            <label><input type="radio" name="p2_2" value="15"> No</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>6. Las personas saben para que se usan sus datos? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p2_3" value="0" required> Si, claramente</label>
+                            <label><input type="radio" name="p2_3" value="5"> Mas o menos</label>
+                            <label><input type="radio" name="p2_3" value="10"> No</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIMENSION 3: PROCESOS -->
+            <div class="card">
+                <div class="dimension peso-alto">
+                    <div class="dimension-title">Dimension 3: Procesos Operativos</div>
+                    <div class="dimension-weight">Peso: ALTO</div>
+                    <div class="form-group">
+                        <label>7. Tienen un proceso para responder solicitudes de acceso o eliminacion de datos? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p3_1" value="0" required> Si</label>
+                            <label><input type="radio" name="p3_1" value="5"> Parcial / informal</label>
+                            <label><input type="radio" name="p3_1" value="15"> No</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>8. Saben cuanto tiempo conservan los datos personales? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p3_2" value="0" required> Si</label>
+                            <label><input type="radio" name="p3_2" value="5"> Para algunos datos</label>
+                            <label><input type="radio" name="p3_2" value="10"> No</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>9. Que pasa si ocurre una filtracion de datos? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p3_3" value="0" required> Tenemos un procedimiento definido</label>
+                            <label><input type="radio" name="p3_3" value="10"> Se resolveria "sobre la marcha"</label>
+                            <label><input type="radio" name="p3_3" value="15"> No se ha pensado</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIMENSION 4: TECNOLOGIA -->
+            <div class="card">
+                <div class="dimension peso-medio">
+                    <div class="dimension-title">Dimension 4: Tecnologia y Seguridad</div>
+                    <div class="dimension-weight">Peso: MEDIO</div>
+                    <div class="form-group">
+                        <label>10. Los accesos a datos personales estan controlados? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p4_1" value="0" required> Si</label>
+                            <label><input type="radio" name="p4_1" value="5"> Parcialmente</label>
+                            <label><input type="radio" name="p4_1" value="10"> No</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>11. Las herramientas externas que usan datos personales tienen contratos claros? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p4_2" value="0" required> Si, con contratos claros</label>
+                            <label><input type="radio" name="p4_2" value="5"> Si, pero sin claridad contractual</label>
+                            <label><input type="radio" name="p4_2" value="10"> No estoy seguro</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIMENSION 5: CULTURA -->
+            <div class="card">
+                <div class="dimension peso-medio">
+                    <div class="dimension-title">Dimension 5: Cultura y Conciencia</div>
+                    <div class="dimension-weight">Peso: MEDIO</div>
+                    <div class="form-group">
+                        <label>12. En la organizacion saben que el mal uso de datos puede generar sanciones? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p5_1" value="0" required> Si</label>
+                            <label><input type="radio" name="p5_1" value="5"> Algunas personas</label>
+                            <label><input type="radio" name="p5_1" value="10"> No</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>13. Se ha capacitado al equipo en proteccion de datos? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p5_2" value="0" required> Si</label>
+                            <label><input type="radio" name="p5_2" value="5"> Parcialmente</label>
+                            <label><input type="radio" name="p5_2" value="10"> Nunca</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="text-align: center;">
+                <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Obtener mi Diagnostico</button>
+                <p style="margin-top: 12px; font-size: 0.85rem; color: var(--gray);">
+                    Recibiras tus resultados de forma inmediata en pantalla.
+                </p>
+            </div>
+        </form>
+    </div>
+
+    <!-- ==================== RESULTADOS ==================== -->
+    <div class="container hidden" id="resultSection">
+        <!-- Populated by JavaScript -->
+    </div>
+
+    <div style="text-align: center; padding: 20px; color: var(--gray); font-size: 0.8rem;">
+        &copy; 2026 The Wise Monkey Project. Diagnostico orientativo - no constituye auditoria legal.
+    </div>
+
+    <script>
+    // ============================================================
+    // SCORING ENGINE - Replica exacta de scoring.py
+    // ============================================================
+
+    const SCORE_MAXES = {
+        p1_1: 15, p1_2: 10, p1_3: 10,
+        p2_1: 20, p2_2: 15, p2_3: 10,
+        p3_1: 15, p3_2: 10, p3_3: 15,
+        p4_1: 10, p4_2: 10,
+        p5_1: 10, p5_2: 10
+    };
+
+    const DIMENSIONS = [
+        { nombre: "Gobernanza y Responsabilidad", peso: "MUY ALTO", preguntas: ["p1_1", "p1_2", "p1_3"] },
+        { nombre: "Bases Legales y Transparencia", peso: "MUY ALTO", preguntas: ["p2_1", "p2_2", "p2_3"] },
+        { nombre: "Procesos Operativos", peso: "ALTO", preguntas: ["p3_1", "p3_2", "p3_3"] },
+        { nombre: "Tecnologia y Seguridad", peso: "MEDIO", preguntas: ["p4_1", "p4_2"] },
+        { nombre: "Cultura y Conciencia", peso: "MEDIO", preguntas: ["p5_1", "p5_2"] }
+    ];
+
+    const BRECHA_LABELS = {
+        p1_1: "No existe responsable formal de proteccion de datos",
+        p1_2: "Alta direccion no involucrada en decisiones de datos",
+        p1_3: "No existen lineamientos internos claros",
+        p2_1: "No pueden justificar el uso de datos que recolectan",
+        p2_2: "Consentimiento no explicito ni demostrable",
+        p2_3: "Las personas no saben para que se usan sus datos",
+        p3_1: "Sin proceso para solicitudes de acceso/eliminacion",
+        p3_2: "No saben cuanto tiempo conservan los datos",
+        p3_3: "Sin procedimiento ante filtracion de datos",
+        p4_1: "Accesos a datos personales no controlados",
+        p4_2: "Herramientas externas sin contratos claros",
+        p5_1: "Desconocimiento de sanciones por mal uso de datos",
+        p5_2: "Equipo no capacitado en proteccion de datos"
+    };
+
+    // ---- CONFIGURABLE: Link de WhatsApp ----
+    const WHATSAPP_URL = "https://wa.me/56988044140?text=Hola%2C%20acabo%20de%20completar%20el%20Diagn%C3%B3stico%20Express%20de%20Ley%2021.719%20y%20me%20gustar%C3%ADa%20agendar%20una%20conversaci%C3%B3n.";
+
+    // ---- CONFIGURABLE: URL de tu Google Apps Script (web app) ----
+    // Reemplaza con tu URL real despues de deployar el Apps Script
+    const GOOGLE_SHEET_URL = "";
+
+    function getRadioValue(name) {
+        const el = document.querySelector(`input[name="${name}"]:checked`);
+        return el ? parseInt(el.value) : 0;
+    }
+
+    function calcularScore(formData) {
+        const scores = {};
+        for (const key of Object.keys(SCORE_MAXES)) {
+            scores[key] = getRadioValue(key);
+        }
+
+        // Dimension scores
+        const dimensiones = DIMENSIONS.map(dim => {
+            const score = dim.preguntas.reduce((sum, p) => sum + scores[p], 0);
+            const scoreMax = dim.preguntas.reduce((sum, p) => sum + SCORE_MAXES[p], 0);
+            const porcentaje = scoreMax > 0 ? Math.round((score / scoreMax) * 1000) / 10 : 0;
+            return { nombre: dim.nombre, peso: dim.peso, score, scoreMax, porcentaje };
+        });
+
+        const scoreTotal = dimensiones.reduce((sum, d) => sum + d.score, 0);
+        const scoreMax = dimensiones.reduce((sum, d) => sum + d.scoreMax, 0);
+        const scoreNormalizado = scoreMax > 0 ? Math.round((scoreTotal / scoreMax) * 1000) / 10 : 0;
+
+        // Critical triggers
+        const gatillos = [];
+        if (scores.p1_1 === 15) gatillos.push("No existe responsable formal de proteccion de datos");
+        if (scores.p2_1 === 20) gatillos.push("No pueden justificar el uso de datos recolectados");
+        if (scores.p3_3 === 15) gatillos.push("No existe plan de respuesta ante incidentes de datos");
+
+        // Risk level
+        let nivelRiesgo;
+        if (gatillos.length > 0) {
+            nivelRiesgo = "ALTO RIESGO";
+        } else if (scoreNormalizado <= 20) {
+            nivelRiesgo = "BAJO RIESGO";
+        } else if (scoreNormalizado <= 45) {
+            nivelRiesgo = "RIESGO MEDIO";
+        } else {
+            nivelRiesgo = "ALTO RIESGO";
+        }
+
+        // Top 3 gaps
+        const preguntasScores = Object.keys(SCORE_MAXES)
+            .filter(p => scores[p] > 0)
+            .map(p => ({ key: p, val: scores[p], ratio: scores[p] / SCORE_MAXES[p] }))
+            .sort((a, b) => b.ratio - a.ratio);
+        const brechas = preguntasScores.slice(0, 3).map(p => BRECHA_LABELS[p.key]);
+
+        // Financial exposure
+        let estimacion;
+        if (nivelRiesgo === "ALTO RIESGO") {
+            estimacion = "USD $350,000 - $1,400,000 (multas graves a gravisimas)";
+        } else if (nivelRiesgo === "RIESGO MEDIO") {
+            estimacion = "USD $50,000 - $350,000 (multas leves a graves)";
+        } else {
+            estimacion = "Riesgo financiero bajo con controles actuales";
+        }
+
+        // Recommendation
+        let recomendacion;
+        if (nivelRiesgo === "ALTO RIESGO") {
+            recomendacion = "Su organizacion presenta brechas criticas que requieren atencion inmediata. Recomendamos un Diagnostico Profundo para mapear procesos de datos, identificar riesgos prioritarios y definir un roadmap de cumplimiento.";
+        } else if (nivelRiesgo === "RIESGO MEDIO") {
+            recomendacion = "Su organizacion tiene brechas relevantes que conviene abordar antes de diciembre 2026. Un Roadmap Estrategico le permitira priorizar acciones y avanzar de forma ordenada.";
+        } else {
+            recomendacion = "Su organizacion muestra un buen nivel de control inicial. Recomendamos una revision periodica y capacitacion continua para mantener el cumplimiento.";
+        }
+
+        return {
+            dimensiones, scoreTotal, scoreMax, scoreNormalizado,
+            nivelRiesgo, gatillos, brechas, estimacion, recomendacion, scores
+        };
+    }
+
+    function riskClass(nivel) {
+        if (nivel === "ALTO RIESGO") return "alto";
+        if (nivel === "RIESGO MEDIO") return "medio";
+        return "bajo";
+    }
+
+    function barColor(pct) {
+        if (pct > 45) return "var(--danger)";
+        if (pct > 20) return "var(--warning)";
+        return "var(--success)";
+    }
+
+    function renderResultados(result, contacto) {
+        const rc = riskClass(result.nivelRiesgo);
+        let html = `
+            <div class="result-banner ${rc}">
+                <h2>${result.nivelRiesgo}</h2>
+                <p>Score Global: ${result.scoreTotal}/${result.scoreMax} (${result.scoreNormalizado}%)</p>
+                <p style="font-size:0.85rem; margin-top:4px; color:var(--gray);">${contacto.empresa} | ${contacto.nombre}</p>
+            </div>`;
+
+        // Critical alerts
+        if (result.gatillos.length > 0) {
+            html += `<div class="card" style="border-left: 4px solid var(--danger);">
+                <h2 style="color: var(--danger);">Alertas Criticas</h2>
+                <ul>${result.gatillos.map(g => `<li style="margin-bottom:6px;">${g}</li>`).join('')}</ul>
+            </div>`;
+        }
+
+        // Dimension scores
+        html += `<div class="card"><h2>Score por Dimension</h2>`;
+        for (const dim of result.dimensiones) {
+            html += `
+                <div style="margin-bottom:14px;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.9rem;">
+                        <strong>${dim.nombre}</strong>
+                        <span style="color:var(--gray);">${dim.score}/${dim.scoreMax} (${dim.porcentaje}%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="fill" style="width:${dim.porcentaje}%; background:${barColor(dim.porcentaje)};"></div>
+                    </div>
+                </div>`;
+        }
+        html += `</div>`;
+
+        // Top gaps
+        if (result.brechas.length > 0) {
+            html += `<div class="card"><h2>Principales Brechas Identificadas</h2>
+                <ol>${result.brechas.map(b => `<li style="margin-bottom:8px;">${b}</li>`).join('')}</ol>
+            </div>`;
+        }
+
+        // Financial exposure
+        html += `<div class="card"><h2>Exposicion Financiera Estimada</h2>
+            <p style="font-size:1.1rem; font-weight:600;">${result.estimacion}</p>
+        </div>`;
+
+        // Recommendation
+        html += `<div class="card"><h2>Recomendacion</h2><p>${result.recomendacion}</p></div>`;
+
+        // CTA
+        html += `<div class="card" style="text-align:center; background:var(--dark); color:var(--white);">
+            <h2 style="color:var(--white);">Siguiente Paso</h2>
+            <p style="margin-bottom:16px;">Agenda una conversacion de 30 minutos para revisar tus resultados y definir proximos pasos.</p>
+            <a href="${WHATSAPP_URL}" class="btn btn-primary" target="_blank" style="background:#25D366;">Conversar por WhatsApp</a>
+        </div>`;
+
+        // Print button
+        html += `<div class="card no-print" style="text-align:center;">
+            <button class="btn btn-primary" onclick="window.print()">Guardar como PDF</button>
+            <p style="margin-top:8px; font-size:0.85rem; color:var(--gray);">
+                Usa "Guardar como PDF" en el dialogo de impresion para obtener tu reporte.
+            </p>
+        </div>`;
+
+        document.getElementById('resultSection').innerHTML = html;
+    }
+
+    async function enviarAGoogleSheet(contacto, result) {
+        if (!GOOGLE_SHEET_URL) return;
+        try {
+            const payload = {
+                timestamp: new Date().toISOString(),
+                nombre: contacto.nombre,
+                email: contacto.email,
+                empresa: contacto.empresa,
+                cargo: contacto.cargo,
+                tamano: contacto.tamano,
+                sector: contacto.sector,
+                score_total: result.scoreTotal,
+                score_max: result.scoreMax,
+                score_pct: result.scoreNormalizado,
+                nivel_riesgo: result.nivelRiesgo,
+                gatillos: result.gatillos.join(" | "),
+                brechas: result.brechas.join(" | "),
+                exposicion: result.estimacion
+            };
+            await fetch(GOOGLE_SHEET_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+        } catch (e) {
+            // Silent fail - no interrumpir la experiencia del usuario
+            console.warn("No se pudo enviar a Google Sheets:", e);
+        }
+    }
+
+    function procesarDiagnostico(event) {
+        event.preventDefault();
+
+        const contacto = {
+            nombre: document.getElementById('nombre_contacto').value,
+            email: document.getElementById('email').value,
+            empresa: document.getElementById('empresa').value,
+            cargo: document.getElementById('cargo').value || '',
+            tamano: document.getElementById('tamano').value,
+            sector: document.getElementById('sector').value
+        };
+
+        const result = calcularScore();
+
+        // Render results
+        renderResultados(result, contacto);
+
+        // Show results, hide form
+        document.getElementById('formSection').classList.add('hidden');
+        document.getElementById('resultSection').classList.remove('hidden');
+        document.getElementById('headerBadge').textContent = 'Resultados';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Send to Google Sheets (async, non-blocking)
+        enviarAGoogleSheet(contacto, result);
+
+        return false;
+    }
+    </script>
+</body>
+</html>
