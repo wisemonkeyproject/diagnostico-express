@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagnostico Express - Proteccion de Datos | Ley 21.719</title>
+    <title>Quick-Scan DRA - Madurez en Gestion de Datos | The Wise Monkey Project</title>
     <style>
         :root {
             --primary: #0066cc;
             --danger: #dc3545;
-            --warning: #ffc107;
+            --warning: #f0ad4e;
             --success: #28a745;
+            --info: #17a2b8;
             --dark: #1e1e2e;
             --gray: #6c757d;
             --light: #f5f5fa;
@@ -47,7 +48,7 @@
             box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
         }
         .radio-group {
-            display: flex; flex-direction: column; gap: 8px; margin-top: 6px;
+            display: flex; flex-direction: column; gap: 6px; margin-top: 6px;
         }
         .radio-group label {
             font-weight: 400; display: flex; align-items: flex-start; gap: 8px;
@@ -55,13 +56,14 @@
             cursor: pointer; transition: background 0.15s;
         }
         .radio-group label:hover { background: var(--light); }
-        .radio-group input[type="radio"] { margin-top: 3px; }
-        .dimension { border-left: 3px solid var(--primary); padding-left: 16px; margin-bottom: 24px; }
-        .dimension.peso-muy-alto { border-color: var(--danger); }
-        .dimension.peso-alto { border-color: var(--warning); }
-        .dimension.peso-medio { border-color: var(--primary); }
-        .dimension-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
-        .dimension-weight { font-size: 0.8rem; color: var(--gray); margin-bottom: 12px; }
+        .radio-group input[type="radio"] { margin-top: 3px; flex-shrink: 0; }
+        .ka-section { border-left: 3px solid var(--primary); padding-left: 16px; margin-bottom: 24px; }
+        .ka-section.ka-governance { border-color: #6f42c1; }
+        .ka-section.ka-security { border-color: var(--danger); }
+        .ka-section.ka-integration { border-color: var(--info); }
+        .ka-section.ka-awareness { border-color: var(--warning); }
+        .ka-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+        .ka-subtitle { font-size: 0.8rem; color: var(--gray); margin-bottom: 12px; }
         .btn {
             display: inline-block; padding: 12px 28px; border: none; border-radius: 6px;
             font-size: 1rem; font-weight: 600; cursor: pointer; text-decoration: none;
@@ -71,23 +73,30 @@
         .btn-primary { background: var(--primary); color: var(--white); }
         .btn-block { display: block; width: 100%; text-align: center; }
         .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .framework-badges {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;
+        }
+        .framework-badge {
+            background: #e8eef6; color: var(--primary); padding: 2px 10px;
+            border-radius: 10px; font-size: 0.75rem; font-weight: 600;
+        }
 
         /* Results */
         .result-banner {
             text-align: center; padding: 30px; border-radius: 8px; margin-bottom: 20px;
         }
-        .result-banner.alto { background: #fde8ea; border: 2px solid var(--danger); }
-        .result-banner.medio { background: #fff8e1; border: 2px solid var(--warning); }
-        .result-banner.bajo { background: #e8f5e9; border: 2px solid var(--success); }
+        .result-banner.critico { background: #fde8ea; border: 2px solid var(--danger); }
+        .result-banner.bajo { background: #fff3e0; border: 2px solid var(--warning); }
+        .result-banner.medio { background: #e8f5e9; border: 2px solid var(--success); }
+        .result-banner.alto { background: #e3f2fd; border: 2px solid var(--info); }
         .result-banner h2 { font-size: 1.5rem; margin-bottom: 8px; }
+        .score-big { font-size: 2.5rem; font-weight: 700; margin: 8px 0; }
         .progress-bar {
-            height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden; margin-top: 4px;
+            height: 10px; background: #e9ecef; border-radius: 5px; overflow: hidden; margin-top: 4px;
         }
-        .progress-bar .fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
-        .alerta-critica {
-            border-left: 4px solid var(--danger); padding: 16px; margin-bottom: 12px;
-            background: #fff5f5;
-        }
+        .progress-bar .fill { height: 100%; border-radius: 5px; transition: width 0.6s ease; }
+        .ka-result { margin-bottom: 16px; }
+        .ka-result-header { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 4px; }
         .hidden { display: none; }
 
         /* Print styles */
@@ -101,6 +110,7 @@
         @media (max-width: 600px) {
             .container { padding: 12px; }
             .card { padding: 16px; }
+            .framework-badges { justify-content: center; }
         }
     </style>
 </head>
@@ -108,21 +118,29 @@
     <div class="header">
         <div class="container">
             <h1>The Wise Monkey Project</h1>
-            <span class="badge" id="headerBadge">Diagnostico Express</span>
+            <span class="badge" id="headerBadge">Quick-Scan DRA</span>
         </div>
     </div>
 
     <!-- ==================== FORMULARIO ==================== -->
     <div class="container" id="formSection">
         <div class="card">
-            <h2>Diagnostico Express de Proteccion y Gobernanza de Datos</h2>
-            <p>Evalua en 10 minutos el nivel de preparacion de tu organizacion frente a la Ley 21.719 de Proteccion de Datos Personales.</p>
+            <h2>Quick-Scan DRA: Madurez en Gestion de Datos</h2>
+            <p>Evalua en 2-3 minutos el nivel de madurez de tu organizacion en gestion de datos y preparacion para la Ley 21.719.</p>
             <p style="color: var(--gray); font-size: 0.9rem; margin-top: 8px;">
-                Este diagnostico es confidencial, no constituye una auditoria legal y esta pensado como una herramienta de orientacion inicial.
+                Basado en frameworks internacionales: DAMA-DMBOK2, NIST Privacy Framework y CMM/CMMI.
+            </p>
+            <div class="framework-badges">
+                <span class="framework-badge">DAMA-DMBOK2</span>
+                <span class="framework-badge">NIST Privacy Framework</span>
+                <span class="framework-badge">CMM/CMMI</span>
+            </div>
+            <p style="color: var(--gray); font-size: 0.85rem; margin-top: 12px;">
+                7 preguntas. Confidencial. No constituye auditoria legal.
             </p>
         </div>
 
-        <form id="diagnosticoForm" onsubmit="return procesarDiagnostico(event)">
+        <form id="quickScanForm" onsubmit="return procesarQuickScan(event)">
 
             <!-- DATOS DE CONTACTO -->
             <div class="card">
@@ -166,154 +184,136 @@
                 </div>
             </div>
 
-            <!-- DIMENSION 1: GOBERNANZA -->
+            <!-- Q1: GOBERNANZA DE DATOS -->
             <div class="card">
-                <div class="dimension peso-muy-alto">
-                    <div class="dimension-title">Dimension 1: Gobernanza y Responsabilidad</div>
-                    <div class="dimension-weight">Peso: MUY ALTO</div>
+                <div class="ka-section ka-governance">
+                    <div class="ka-title">Q1. Gobernanza de Datos</div>
+                    <div class="ka-subtitle">Knowledge Area: Data Governance (DMBOK2) | NIST: Govern-P</div>
                     <div class="form-group">
-                        <label>1. Existe un responsable formal de proteccion de datos en la organizacion? *</label>
+                        <label>Existe alguna politica formal o persona responsable de como se manejan los datos de clientes y empleados en la empresa? *</label>
                         <div class="radio-group">
-                            <label><input type="radio" name="p1_1" value="0" required> Si, claramente definido</label>
-                            <label><input type="radio" name="p1_1" value="5"> Existe informalmente</label>
-                            <label><input type="radio" name="p1_1" value="15"> No existe</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>2. La alta direccion esta involucrada en decisiones sobre datos? *</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="p1_2" value="0" required> Si, regularmente</label>
-                            <label><input type="radio" name="p1_2" value="5"> Solo en casos puntuales</label>
-                            <label><input type="radio" name="p1_2" value="10"> No</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>3. Existen lineamientos internos claros sobre el uso de datos? *</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="p1_3" value="0" required> Si, documentados y conocidos</label>
-                            <label><input type="radio" name="p1_3" value="5"> Parciales o poco conocidos</label>
-                            <label><input type="radio" name="p1_3" value="10"> No existen</label>
+                            <label><input type="radio" name="q1" value="0" required> No, nadie se encarga de eso</label>
+                            <label><input type="radio" name="q1" value="1"> Alguien de TI lo ve informalmente</label>
+                            <label><input type="radio" name="q1" value="2"> Hay un responsable pero sin politica escrita</label>
+                            <label><input type="radio" name="q1" value="3"> Hay politica escrita y un responsable formal</label>
+                            <label><input type="radio" name="q1" value="4"> Politica aprobada por directorio, roles definidos, revisiones periodicas</label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- DIMENSION 2: BASES LEGALES -->
+            <!-- Q2: SEGURIDAD - CONTROL DE ACCESO -->
             <div class="card">
-                <div class="dimension peso-muy-alto">
-                    <div class="dimension-title">Dimension 2: Bases Legales y Transparencia</div>
-                    <div class="dimension-weight">Peso: MUY ALTO</div>
+                <div class="ka-section ka-security">
+                    <div class="ka-title">Q2. Control de Acceso</div>
+                    <div class="ka-subtitle">Knowledge Area: Data Security (DMBOK2) | NIST: Protect-P</div>
                     <div class="form-group">
-                        <label>4. Pueden justificar por que usan los datos que recolectan? *</label>
+                        <label>Como controlan quien puede acceder a los datos personales de clientes y empleados? *</label>
                         <div class="radio-group">
-                            <label><input type="radio" name="p2_1" value="0" required> Si, claramente</label>
-                            <label><input type="radio" name="p2_1" value="10"> En algunos casos</label>
-                            <label><input type="radio" name="p2_1" value="20"> No</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>5. El consentimiento de los usuarios es explicito y demostrable? *</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="p2_2" value="0" required> Si</label>
-                            <label><input type="radio" name="p2_2" value="10"> No siempre / no documentado</label>
-                            <label><input type="radio" name="p2_2" value="15"> No</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>6. Las personas saben para que se usan sus datos? *</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="p2_3" value="0" required> Si, claramente</label>
-                            <label><input type="radio" name="p2_3" value="5"> Mas o menos</label>
-                            <label><input type="radio" name="p2_3" value="10"> No</label>
+                            <label><input type="radio" name="q2" value="0" required> Todos acceden a todo, contrasenas compartidas</label>
+                            <label><input type="radio" name="q2" value="1"> Cada uno tiene contrasena propia pero todos ven todo</label>
+                            <label><input type="radio" name="q2" value="2"> Hay algunos perfiles diferenciados</label>
+                            <label><input type="radio" name="q2" value="3"> Acceso por roles, solo ven lo que necesitan</label>
+                            <label><input type="radio" name="q2" value="4"> Roles + MFA + logs de acceso monitoreados</label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- DIMENSION 3: PROCESOS -->
+            <!-- Q3: SEGURIDAD - PROTECCION TECNICA -->
             <div class="card">
-                <div class="dimension peso-alto">
-                    <div class="dimension-title">Dimension 3: Procesos Operativos</div>
-                    <div class="dimension-weight">Peso: ALTO</div>
+                <div class="ka-section ka-security">
+                    <div class="ka-title">Q3. Proteccion Tecnica</div>
+                    <div class="ka-subtitle">Knowledge Area: Data Security (DMBOK2) | NIST: Protect-P</div>
                     <div class="form-group">
-                        <label>7. Tienen un proceso para responder solicitudes de acceso o eliminacion de datos? *</label>
+                        <label>Los datos sensibles estan encriptados? Tienen respaldo (backup)? Que pasa si se pierde un computador con datos de clientes? *</label>
                         <div class="radio-group">
-                            <label><input type="radio" name="p3_1" value="0" required> Si</label>
-                            <label><input type="radio" name="p3_1" value="5"> Parcial / informal</label>
-                            <label><input type="radio" name="p3_1" value="15"> No</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>8. Saben cuanto tiempo conservan los datos personales? *</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="p3_2" value="0" required> Si</label>
-                            <label><input type="radio" name="p3_2" value="5"> Para algunos datos</label>
-                            <label><input type="radio" name="p3_2" value="10"> No</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>9. Que pasa si ocurre una filtracion de datos? *</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="p3_3" value="0" required> Tenemos un procedimiento definido</label>
-                            <label><input type="radio" name="p3_3" value="10"> Se resolveria "sobre la marcha"</label>
-                            <label><input type="radio" name="p3_3" value="15"> No se ha pensado</label>
+                            <label><input type="radio" name="q3" value="0" required> No hay encriptacion ni backup</label>
+                            <label><input type="radio" name="q3" value="1"> Hay backup basico pero sin encriptacion</label>
+                            <label><input type="radio" name="q3" value="2"> Backup regular, encriptacion parcial</label>
+                            <label><input type="radio" name="q3" value="3"> Backup probado, encriptacion en reposo y transito</label>
+                            <label><input type="radio" name="q3" value="4"> Todo encriptado, backup automatico probado, disco encriptado en laptops</label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- DIMENSION 4: TECNOLOGIA -->
+            <!-- Q4: INTEGRACION - FLUJO DE DATOS -->
             <div class="card">
-                <div class="dimension peso-medio">
-                    <div class="dimension-title">Dimension 4: Tecnologia y Seguridad</div>
-                    <div class="dimension-weight">Peso: MEDIO</div>
+                <div class="ka-section ka-integration">
+                    <div class="ka-title">Q4. Flujo de Datos</div>
+                    <div class="ka-subtitle">Knowledge Area: Data Integration & Interoperability (DMBOK2) | NIST: Identify-P / Control-P</div>
                     <div class="form-group">
-                        <label>10. Los accesos a datos personales estan controlados? *</label>
+                        <label>Saben como se mueven los datos dentro de la empresa y con quienes los comparten afuera (contadores, proveedores de email, hosting)? *</label>
                         <div class="radio-group">
-                            <label><input type="radio" name="p4_1" value="0" required> Si</label>
-                            <label><input type="radio" name="p4_1" value="5"> Parcialmente</label>
-                            <label><input type="radio" name="p4_1" value="10"> No</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>11. Las herramientas externas que usan datos personales tienen contratos claros? *</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="p4_2" value="0" required> Si, con contratos claros</label>
-                            <label><input type="radio" name="p4_2" value="5"> Si, pero sin claridad contractual</label>
-                            <label><input type="radio" name="p4_2" value="10"> No estoy seguro</label>
+                            <label><input type="radio" name="q4" value="0" required> No hemos pensado en eso</label>
+                            <label><input type="radio" name="q4" value="1"> Sabemos con quienes compartimos pero no esta documentado</label>
+                            <label><input type="radio" name="q4" value="2"> Tenemos una lista parcial de proveedores</label>
+                            <label><input type="radio" name="q4" value="3"> Flujos documentados, lista de terceros, contratos</label>
+                            <label><input type="radio" name="q4" value="4"> Mapa completo de flujos, contratos DPA con todos los terceros</label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- DIMENSION 5: CULTURA -->
+            <!-- Q5: AWARENESS - PREPARACION LEY -->
             <div class="card">
-                <div class="dimension peso-medio">
-                    <div class="dimension-title">Dimension 5: Cultura y Conciencia</div>
-                    <div class="dimension-weight">Peso: MEDIO</div>
+                <div class="ka-section ka-awareness">
+                    <div class="ka-title">Q5. Preparacion para la Ley 21.719</div>
+                    <div class="ka-subtitle">Compliance & Awareness | Vigencia: diciembre 2026</div>
                     <div class="form-group">
-                        <label>12. En la organizacion saben que el mal uso de datos puede generar sanciones? *</label>
+                        <label>Que tan preparados estan para la Ley 21.719 que entra en vigencia en diciembre 2026? Han tomado alguna accion concreta? *</label>
                         <div class="radio-group">
-                            <label><input type="radio" name="p5_1" value="0" required> Si</label>
-                            <label><input type="radio" name="p5_1" value="5"> Algunas personas</label>
-                            <label><input type="radio" name="p5_1" value="10"> No</label>
+                            <label><input type="radio" name="q5" value="0" required> No conocemos la ley</label>
+                            <label><input type="radio" name="q5" value="1"> Sabemos que existe pero no hemos hecho nada</label>
+                            <label><input type="radio" name="q5" value="2"> Estamos averiguando, hemos consultado a un abogado</label>
+                            <label><input type="radio" name="q5" value="3"> Tenemos plan de accion con hitos y responsables</label>
+                            <label><input type="radio" name="q5" value="4"> Ya estamos implementando cambios, tenemos DPO y modelo de prevencion</label>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Q6: AWARENESS - CAPACITACION -->
+            <div class="card">
+                <div class="ka-section ka-awareness">
+                    <div class="ka-title">Q6. Capacitacion</div>
+                    <div class="ka-subtitle">Compliance & Awareness | Capital humano</div>
                     <div class="form-group">
-                        <label>13. Se ha capacitado al equipo en proteccion de datos? *</label>
+                        <label>El personal que maneja datos sabe que cuidados debe tener? Han recibido alguna capacitacion? *</label>
                         <div class="radio-group">
-                            <label><input type="radio" name="p5_2" value="0" required> Si</label>
-                            <label><input type="radio" name="p5_2" value="5"> Parcialmente</label>
-                            <label><input type="radio" name="p5_2" value="10"> Nunca</label>
+                            <label><input type="radio" name="q6" value="0" required> No hay capacitacion</label>
+                            <label><input type="radio" name="q6" value="1"> Se les dice informalmente que tengan cuidado</label>
+                            <label><input type="radio" name="q6" value="2"> Hubo una charla alguna vez</label>
+                            <label><input type="radio" name="q6" value="3"> Capacitacion anual para todo el personal relevante</label>
+                            <label><input type="radio" name="q6" value="4"> Programa continuo, certificado, con evaluaciones</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q7: SEGURIDAD - RESPUESTA A INCIDENTES -->
+            <div class="card">
+                <div class="ka-section ka-security">
+                    <div class="ka-title">Q7. Respuesta a Incidentes</div>
+                    <div class="ka-subtitle">Knowledge Area: Data Security (DMBOK2) | NIST: Protect-P / Respond</div>
+                    <div class="form-group">
+                        <label>Si manana descubren que alguien accedio sin autorizacion a datos de clientes, que harian? Tienen un plan? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="q7" value="0" required> No hemos pensado en eso</label>
+                            <label><input type="radio" name="q7" value="1"> Llamariamos a alguien de TI</label>
+                            <label><input type="radio" name="q7" value="2"> Tenemos una idea general de que hacer</label>
+                            <label><input type="radio" name="q7" value="3"> Plan escrito con roles, procedimientos y contactos</label>
+                            <label><input type="radio" name="q7" value="4"> Plan probado con simulacros, notificacion automatica</label>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="card" style="text-align: center;">
-                <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Obtener mi Diagnostico</button>
+                <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Obtener mi Quick-Scan DRA</button>
                 <p style="margin-top: 12px; font-size: 0.85rem; color: var(--gray);">
-                    Recibiras tus resultados de forma inmediata en pantalla.
+                    Resultados inmediatos en pantalla. Sin costo, sin compromiso.
                 </p>
             </div>
         </form>
@@ -325,51 +325,68 @@
     </div>
 
     <div style="text-align: center; padding: 20px; color: var(--gray); font-size: 0.8rem;">
-        &copy; 2026 The Wise Monkey Project. Diagnostico orientativo - no constituye auditoria legal.
+        &copy; 2026 The Wise Monkey Project. Quick-Scan orientativo basado en DAMA-DMBOK2, NIST PF y CMM/CMMI. No constituye auditoria legal.
     </div>
 
     <script>
     // ============================================================
-    // SCORING ENGINE - Replica exacta de scoring.py
+    // QUICK-SCAN DRA SCORING ENGINE
+    // Replica de QuickScanScoring (DRA src/scoring.py)
+    // 7 preguntas, escala 0-4, score 0-100%
     // ============================================================
 
-    const SCORE_MAXES = {
-        p1_1: 15, p1_2: 10, p1_3: 10,
-        p2_1: 20, p2_2: 15, p2_3: 10,
-        p3_1: 15, p3_2: 10, p3_3: 15,
-        p4_1: 10, p4_2: 10,
-        p5_1: 10, p5_2: 10
+    const QUESTIONS = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7'];
+
+    const QUESTION_LABELS = {
+        q1: 'Gobernanza de Datos',
+        q2: 'Control de Acceso',
+        q3: 'Proteccion Tecnica',
+        q4: 'Flujo de Datos',
+        q5: 'Preparacion Ley 21.719',
+        q6: 'Capacitacion',
+        q7: 'Respuesta a Incidentes'
     };
 
-    const DIMENSIONS = [
-        { nombre: "Gobernanza y Responsabilidad", peso: "MUY ALTO", preguntas: ["p1_1", "p1_2", "p1_3"] },
-        { nombre: "Bases Legales y Transparencia", peso: "MUY ALTO", preguntas: ["p2_1", "p2_2", "p2_3"] },
-        { nombre: "Procesos Operativos", peso: "ALTO", preguntas: ["p3_1", "p3_2", "p3_3"] },
-        { nombre: "Tecnologia y Seguridad", peso: "MEDIO", preguntas: ["p4_1", "p4_2"] },
-        { nombre: "Cultura y Conciencia", peso: "MEDIO", preguntas: ["p5_1", "p5_2"] }
+    // Mapeo pregunta → Knowledge Area (DMBOK2)
+    const KA_MAPPING = {
+        q1: 'governance',
+        q2: 'security',
+        q3: 'security',
+        q4: 'integration',
+        q5: 'governance',
+        q6: 'governance',
+        q7: 'security'
+    };
+
+    const KA_NAMES = {
+        governance: 'Data Governance',
+        security: 'Data Security',
+        integration: 'Data Integration & Interoperability'
+    };
+
+    const KA_COLORS = {
+        governance: '#6f42c1',
+        security: '#dc3545',
+        integration: '#17a2b8'
+    };
+
+    const LEVELS = [
+        { min: 0, max: 25, nivel: 'Critico', clase: 'critico', rec: 'DRA Assessment urgente — minimo 3 Knowledge Areas. Alto riesgo regulatorio ante la Ley 21.719.' },
+        { min: 26, max: 50, nivel: 'Bajo', clase: 'bajo', rec: 'DRA Assessment recomendado — priorizar las Knowledge Areas con peor score para cerrar brechas criticas.' },
+        { min: 51, max: 75, nivel: 'Medio', clase: 'medio', rec: 'DRA Assessment selectivo — foco en gaps especificos identificados en las areas mas debiles.' },
+        { min: 76, max: 100, nivel: 'Alto', clase: 'alto', rec: 'Buen nivel de madurez. Recomendamos DRA lite o monitoreo periodico para mantener el cumplimiento.' }
     ];
 
-    const BRECHA_LABELS = {
-        p1_1: "No existe responsable formal de proteccion de datos",
-        p1_2: "Alta direccion no involucrada en decisiones de datos",
-        p1_3: "No existen lineamientos internos claros",
-        p2_1: "No pueden justificar el uso de datos que recolectan",
-        p2_2: "Consentimiento no explicito ni demostrable",
-        p2_3: "Las personas no saben para que se usan sus datos",
-        p3_1: "Sin proceso para solicitudes de acceso/eliminacion",
-        p3_2: "No saben cuanto tiempo conservan los datos",
-        p3_3: "Sin procedimiento ante filtracion de datos",
-        p4_1: "Accesos a datos personales no controlados",
-        p4_2: "Herramientas externas sin contratos claros",
-        p5_1: "Desconocimiento de sanciones por mal uso de datos",
-        p5_2: "Equipo no capacitado en proteccion de datos"
+    const CRITICAL_AREA_LABELS = {
+        governance: 'Gobernanza de Datos — Sin estructura formal de gestion de datos ni roles definidos.',
+        security: 'Seguridad de Datos — Controles insuficientes para proteger datos personales.',
+        integration: 'Integracion de Datos — Flujos de datos no mapeados ni controlados con terceros.'
     };
 
     // ---- CONFIGURABLE: Link de WhatsApp ----
-    const WHATSAPP_URL = "https://wa.me/56988044140?text=Hola%2C%20acabo%20de%20completar%20el%20Diagn%C3%B3stico%20Express%20de%20Ley%2021.719%20y%20me%20gustar%C3%ADa%20agendar%20una%20conversaci%C3%B3n.";
+    const WHATSAPP_URL = "https://wa.me/56988044140?text=Hola%2C%20acabo%20de%20completar%20el%20Quick-Scan%20DRA%20y%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20el%20DRA%20Assessment.";
 
     // ---- CONFIGURABLE: URL de tu Google Apps Script (web app) ----
-    // Reemplaza con tu URL real despues de deployar el Apps Script
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbz2RPJSvQA5HY0MLke7mUOFfsBccP5kEotsIqPbGXXAQy0G8UW13OvlBppAYpxsWLn4ZQ/exec";
 
     function getRadioValue(name) {
@@ -377,149 +394,209 @@
         return el ? parseInt(el.value) : 0;
     }
 
-    function calcularScore(formData) {
-        const scores = {};
-        for (const key of Object.keys(SCORE_MAXES)) {
-            scores[key] = getRadioValue(key);
+    function calcularQuickScan() {
+        const responses = {};
+        for (const q of QUESTIONS) {
+            responses[q] = getRadioValue(q);
         }
 
-        // Dimension scores
-        const dimensiones = DIMENSIONS.map(dim => {
-            const score = dim.preguntas.reduce((sum, p) => sum + scores[p], 0);
-            const scoreMax = dim.preguntas.reduce((sum, p) => sum + SCORE_MAXES[p], 0);
-            const porcentaje = scoreMax > 0 ? Math.round((score / scoreMax) * 1000) / 10 : 0;
-            return { nombre: dim.nombre, peso: dim.peso, score, scoreMax, porcentaje };
-        });
+        const total = Object.values(responses).reduce((sum, v) => sum + v, 0);
+        const maxScore = QUESTIONS.length * 4; // 28
+        const percentage = Math.round((total / maxScore) * 100);
 
-        const scoreTotal = dimensiones.reduce((sum, d) => sum + d.score, 0);
-        const scoreMax = dimensiones.reduce((sum, d) => sum + d.scoreMax, 0);
-        const scoreNormalizado = scoreMax > 0 ? Math.round((scoreTotal / scoreMax) * 1000) / 10 : 0;
-
-        // Critical triggers
-        const gatillos = [];
-        if (scores.p1_1 === 15) gatillos.push("No existe responsable formal de proteccion de datos");
-        if (scores.p2_1 === 20) gatillos.push("No pueden justificar el uso de datos recolectados");
-        if (scores.p3_3 === 15) gatillos.push("No existe plan de respuesta ante incidentes de datos");
-
-        // Risk level
-        let nivelRiesgo;
-        if (gatillos.length > 0) {
-            nivelRiesgo = "ALTO RIESGO";
-        } else if (scoreNormalizado <= 20) {
-            nivelRiesgo = "BAJO RIESGO";
-        } else if (scoreNormalizado <= 45) {
-            nivelRiesgo = "RIESGO MEDIO";
-        } else {
-            nivelRiesgo = "ALTO RIESGO";
+        // Determine level
+        let nivel = 'Desconocido';
+        let clase = 'bajo';
+        let recommendation = '';
+        for (const lv of LEVELS) {
+            if (percentage >= lv.min && percentage <= lv.max) {
+                nivel = lv.nivel;
+                clase = lv.clase;
+                recommendation = lv.rec;
+                break;
+            }
         }
 
-        // Top 3 gaps
-        const preguntasScores = Object.keys(SCORE_MAXES)
-            .filter(p => scores[p] > 0)
-            .map(p => ({ key: p, val: scores[p], ratio: scores[p] / SCORE_MAXES[p] }))
-            .sort((a, b) => b.ratio - a.ratio);
-        const brechas = preguntasScores.slice(0, 3).map(p => BRECHA_LABELS[p.key]);
-
-        // Financial exposure
-        let estimacion;
-        if (nivelRiesgo === "ALTO RIESGO") {
-            estimacion = "USD $350,000 - $1,400,000 (multas graves a gravisimas)";
-        } else if (nivelRiesgo === "RIESGO MEDIO") {
-            estimacion = "USD $50,000 - $350,000 (multas leves a graves)";
-        } else {
-            estimacion = "Riesgo financiero bajo con controles actuales";
+        // Calculate KA averages
+        const kaScores = {};
+        const kaCounts = {};
+        for (const q of QUESTIONS) {
+            const ka = KA_MAPPING[q];
+            kaScores[ka] = (kaScores[ka] || 0) + responses[q];
+            kaCounts[ka] = (kaCounts[ka] || 0) + 1;
+        }
+        const kaAverages = {};
+        for (const ka of Object.keys(kaScores)) {
+            kaAverages[ka] = kaScores[ka] / kaCounts[ka];
         }
 
-        // Recommendation
-        let recomendacion;
-        if (nivelRiesgo === "ALTO RIESGO") {
-            recomendacion = "Su organizacion presenta brechas criticas que requieren atencion inmediata. Recomendamos un Diagnostico Profundo para mapear procesos de datos, identificar riesgos prioritarios y definir un roadmap de cumplimiento.";
-        } else if (nivelRiesgo === "RIESGO MEDIO") {
-            recomendacion = "Su organizacion tiene brechas relevantes que conviene abordar antes de diciembre 2026. Un Roadmap Estrategico le permitira priorizar acciones y avanzar de forma ordenada.";
+        // Identify critical area (lowest KA average)
+        let criticalKA = Object.keys(kaAverages).reduce((a, b) => kaAverages[a] <= kaAverages[b] ? a : b);
+
+        // Sort KAs by score (ascending = most needy first)
+        const suggestedKAs = Object.keys(kaAverages).sort((a, b) => kaAverages[a] - kaAverages[b]);
+
+        // Per-question details for gap analysis
+        const questionDetails = QUESTIONS.map(q => ({
+            key: q,
+            label: QUESTION_LABELS[q],
+            ka: KA_MAPPING[q],
+            score: responses[q],
+            maxScore: 4
+        }));
+
+        // Financial exposure based on level
+        let exposure;
+        if (nivel === 'Critico') {
+            exposure = 'USD $350,000 - $1,400,000 (multas graves a gravisimas)';
+        } else if (nivel === 'Bajo') {
+            exposure = 'USD $50,000 - $700,000 (multas leves a graves)';
+        } else if (nivel === 'Medio') {
+            exposure = 'Exposicion moderada — brechas especificas pueden generar multas leves';
         } else {
-            recomendacion = "Su organizacion muestra un buen nivel de control inicial. Recomendamos una revision periodica y capacitacion continua para mantener el cumplimiento.";
+            exposure = 'Riesgo financiero bajo con controles actuales';
         }
 
         return {
-            dimensiones, scoreTotal, scoreMax, scoreNormalizado,
-            nivelRiesgo, gatillos, brechas, estimacion, recomendacion, scores
+            responses,
+            total,
+            maxScore,
+            percentage,
+            nivel,
+            clase,
+            recommendation,
+            kaAverages,
+            criticalKA,
+            suggestedKAs,
+            questionDetails,
+            exposure
         };
     }
 
-    function riskClass(nivel) {
-        if (nivel === "ALTO RIESGO") return "alto";
-        if (nivel === "RIESGO MEDIO") return "medio";
-        return "bajo";
-    }
-
-    function barColor(pct) {
-        if (pct > 45) return "var(--danger)";
-        if (pct > 20) return "var(--warning)";
-        return "var(--success)";
+    function barColor(score, max) {
+        const pct = (score / max) * 100;
+        if (pct <= 25) return 'var(--danger)';
+        if (pct <= 50) return 'var(--warning)';
+        if (pct <= 75) return 'var(--success)';
+        return 'var(--info)';
     }
 
     function renderResultados(result, contacto) {
-        const rc = riskClass(result.nivelRiesgo);
-        let html = `
-            <div class="result-banner ${rc}">
-                <h2>${result.nivelRiesgo}</h2>
-                <p>Score Global: ${result.scoreTotal}/${result.scoreMax} (${result.scoreNormalizado}%)</p>
-                <p style="font-size:0.85rem; margin-top:4px; color:var(--gray);">${contacto.empresa} | ${contacto.nombre}</p>
+        let html = '';
+
+        // Banner with score
+        html += `
+            <div class="result-banner ${result.clase}">
+                <p style="font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Nivel de Madurez</p>
+                <h2>${result.nivel}</h2>
+                <div class="score-big">${result.percentage}%</div>
+                <p>${result.total}/${result.maxScore} puntos</p>
+                <p style="font-size:0.85rem; margin-top:8px; color:var(--gray);">${contacto.empresa} | ${contacto.nombre}</p>
             </div>`;
 
-        // Critical alerts
-        if (result.gatillos.length > 0) {
-            html += `<div class="card" style="border-left: 4px solid var(--danger);">
-                <h2 style="color: var(--danger);">Alertas Criticas</h2>
-                <ul>${result.gatillos.map(g => `<li style="margin-bottom:6px;">${g}</li>`).join('')}</ul>
-            </div>`;
-        }
-
-        // Dimension scores
-        html += `<div class="card"><h2>Score por Dimension</h2>`;
-        for (const dim of result.dimensiones) {
+        // KA scores
+        html += `<div class="card"><h2>Score por Knowledge Area (DMBOK2)</h2>`;
+        for (const ka of ['governance', 'security', 'integration']) {
+            const avg = result.kaAverages[ka] || 0;
+            const pct = Math.round((avg / 4) * 100);
+            const isCritical = ka === result.criticalKA;
             html += `
-                <div style="margin-bottom:14px;">
-                    <div style="display:flex; justify-content:space-between; font-size:0.9rem;">
-                        <strong>${dim.nombre}</strong>
-                        <span style="color:var(--gray);">${dim.score}/${dim.scoreMax} (${dim.porcentaje}%)</span>
+                <div class="ka-result" ${isCritical ? 'style="background:#fff5f5; padding:10px; border-radius:6px; margin:0 -10px 16px -10px;"' : ''}>
+                    <div class="ka-result-header">
+                        <strong style="color:${KA_COLORS[ka]}">${KA_NAMES[ka]}${isCritical ? ' (Area Critica)' : ''}</strong>
+                        <span>${pct}% (${avg.toFixed(1)}/4.0)</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="fill" style="width:${dim.porcentaje}%; background:${barColor(dim.porcentaje)};"></div>
+                        <div class="fill" style="width:${pct}%; background:${KA_COLORS[ka]};"></div>
                     </div>
                 </div>`;
         }
         html += `</div>`;
 
-        // Top gaps
-        if (result.brechas.length > 0) {
-            html += `<div class="card"><h2>Principales Brechas Identificadas</h2>
-                <ol>${result.brechas.map(b => `<li style="margin-bottom:8px;">${b}</li>`).join('')}</ol>
-            </div>`;
+        // Detail per question
+        html += `<div class="card"><h2>Detalle por Pregunta</h2>`;
+        for (const q of result.questionDetails) {
+            const pct = Math.round((q.score / q.maxScore) * 100);
+            html += `
+                <div style="margin-bottom:12px;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+                        <span>${q.label}</span>
+                        <span style="color:var(--gray); font-weight:600;">${q.score}/${q.maxScore}</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="fill" style="width:${pct}%; background:${barColor(q.score, q.maxScore)};"></div>
+                    </div>
+                </div>`;
         }
+        html += `</div>`;
+
+        // Critical area
+        html += `
+            <div class="card" style="border-left: 4px solid var(--danger);">
+                <h2 style="color: var(--danger);">Area Critica Identificada</h2>
+                <p style="font-weight:600; margin-bottom:8px;">${KA_NAMES[result.criticalKA]}</p>
+                <p>${CRITICAL_AREA_LABELS[result.criticalKA]}</p>
+            </div>`;
 
         // Financial exposure
-        html += `<div class="card"><h2>Exposicion Financiera Estimada</h2>
-            <p style="font-size:1.1rem; font-weight:600;">${result.estimacion}</p>
-        </div>`;
+        html += `
+            <div class="card">
+                <h2>Exposicion Financiera Estimada (Ley 21.719)</h2>
+                <p style="font-size:1.1rem; font-weight:600;">${result.exposure}</p>
+                <p style="font-size:0.85rem; color:var(--gray); margin-top:8px;">
+                    Basado en regimen sancionatorio: leves hasta ~$350K USD, graves ~$700K USD, gravisimas ~$1.4M USD. Reincidencia: 2-4% ingresos anuales.
+                </p>
+            </div>`;
 
         // Recommendation
-        html += `<div class="card"><h2>Recomendacion</h2><p>${result.recomendacion}</p></div>`;
+        html += `
+            <div class="card">
+                <h2>Recomendacion</h2>
+                <p>${result.recommendation}</p>
+                <p style="margin-top:12px; font-size:0.9rem;">
+                    <strong>Knowledge Areas sugeridas para DRA Assessment:</strong>
+                    ${result.suggestedKAs.map(ka => KA_NAMES[ka]).join(' → ')}
+                </p>
+            </div>`;
+
+        // Frameworks used
+        html += `
+            <div class="card">
+                <h2>Metodologia Aplicada</h2>
+                <p style="font-size:0.9rem;">Este Quick-Scan evalua 3 Knowledge Areas criticas usando triple framework:</p>
+                <ul style="margin-top:8px; padding-left:20px; font-size:0.9rem;">
+                    <li><strong>DAMA-DMBOK2</strong> — QUE evaluar (Knowledge Areas de gestion de datos)</li>
+                    <li><strong>NIST Privacy Framework</strong> — CONTRA QUE comparar (Current vs Target Profile)</li>
+                    <li><strong>CMM/CMMI</strong> — COMO medir (niveles 0-4 de madurez simplificados)</li>
+                </ul>
+                <p style="font-size:0.85rem; color:var(--gray); margin-top:8px;">
+                    El DRA Assessment completo profundiza en 5 subdimensiones por KA (roles, procesos, herramientas, calidad, riesgos) con escala CMM 0-5.
+                </p>
+            </div>`;
 
         // CTA
-        html += `<div class="card" style="text-align:center; background:var(--dark); color:var(--white);">
-            <h2 style="color:var(--white);">Siguiente Paso</h2>
-            <p style="margin-bottom:16px;">Agenda una conversacion de 30 minutos para revisar tus resultados y definir proximos pasos.</p>
-            <a href="${WHATSAPP_URL}" class="btn btn-primary" target="_blank" style="background:#25D366;">Conversar por WhatsApp</a>
-        </div>`;
+        html += `
+            <div class="card" style="text-align:center; background:var(--dark); color:var(--white);">
+                <h2 style="color:var(--white);">Siguiente Paso: DRA Assessment</h2>
+                <p style="margin-bottom:16px;">
+                    Obtiene un diagnostico completo con gap analysis detallado, roadmap priorizado y quick wins implementables en semanas.
+                </p>
+                <a href="${WHATSAPP_URL}" class="btn btn-primary" target="_blank" style="background:#25D366; margin-bottom:12px;">
+                    Solicitar DRA Assessment por WhatsApp
+                </a>
+                <p style="font-size:0.85rem; color:rgba(255,255,255,0.7); margin-top:12px;">
+                    Conversacion de 15 min sin compromiso para entender tu situacion.
+                </p>
+            </div>`;
 
         // Print button
-        html += `<div class="card no-print" style="text-align:center;">
-            <button class="btn btn-primary" onclick="window.print()">Guardar como PDF</button>
-            <p style="margin-top:8px; font-size:0.85rem; color:var(--gray);">
-                Usa "Guardar como PDF" en el dialogo de impresion para obtener tu reporte.
-            </p>
-        </div>`;
+        html += `
+            <div class="card no-print" style="text-align:center;">
+                <button class="btn btn-primary" onclick="window.print()">Guardar como PDF</button>
+                <p style="margin-top:8px; font-size:0.85rem; color:var(--gray);">
+                    Usa "Guardar como PDF" en el dialogo de impresion para obtener tu reporte.
+                </p>
+            </div>`;
 
         document.getElementById('resultSection').innerHTML = html;
     }
@@ -535,13 +612,20 @@
                 cargo: contacto.cargo,
                 tamano: contacto.tamano,
                 sector: contacto.sector,
-                score_total: result.scoreTotal,
-                score_max: result.scoreMax,
-                score_pct: result.scoreNormalizado,
-                nivel_riesgo: result.nivelRiesgo,
-                gatillos: result.gatillos.join(" | "),
-                brechas: result.brechas.join(" | "),
-                exposicion: result.estimacion
+                q1: result.responses.q1,
+                q2: result.responses.q2,
+                q3: result.responses.q3,
+                q4: result.responses.q4,
+                q5: result.responses.q5,
+                q6: result.responses.q6,
+                q7: result.responses.q7,
+                score_pct: result.percentage,
+                nivel: result.nivel,
+                area_critica: result.criticalKA,
+                kas_sugeridas: result.suggestedKAs.join(' > '),
+                ka_governance_pct: Math.round((result.kaAverages.governance / 4) * 100),
+                ka_security_pct: Math.round((result.kaAverages.security / 4) * 100),
+                ka_integration_pct: Math.round((result.kaAverages.integration / 4) * 100)
             };
             await fetch(GOOGLE_SHEET_URL, {
                 method: "POST",
@@ -550,12 +634,11 @@
                 body: JSON.stringify(payload)
             });
         } catch (e) {
-            // Silent fail - no interrumpir la experiencia del usuario
             console.warn("No se pudo enviar a Google Sheets:", e);
         }
     }
 
-    function procesarDiagnostico(event) {
+    function procesarQuickScan(event) {
         event.preventDefault();
 
         const contacto = {
@@ -567,18 +650,15 @@
             sector: document.getElementById('sector').value
         };
 
-        const result = calcularScore();
+        const result = calcularQuickScan();
 
-        // Render results
         renderResultados(result, contacto);
 
-        // Show results, hide form
         document.getElementById('formSection').classList.add('hidden');
         document.getElementById('resultSection').classList.remove('hidden');
         document.getElementById('headerBadge').textContent = 'Resultados';
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        // Send to Google Sheets (async, non-blocking)
         enviarAGoogleSheet(contacto, result);
 
         return false;
