@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostico Express - Proteccion de Datos | Ley 21.719</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>The Wise Monkey Project</h1>
+            <span class="badge">Diagnostico Express</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>Diagnostico Express de Proteccion y Gobernanza de Datos</h2>
+            <p>Evalua en 10 minutos el nivel de preparacion de tu organizacion frente a la Ley 21.719 de Proteccion de Datos Personales.</p>
+            <p style="color: var(--gray); font-size: 0.9rem; margin-top: 8px;">
+                Este diagnostico es confidencial, no constituye una auditoria legal y esta pensado como una herramienta de orientacion inicial.
+            </p>
+        </div>
+
+        <form method="POST" action="/diagnostico/result" id="diagnosticoForm">
+
+            <!-- CONTEXTO -->
+            <div class="card">
+                <h2>Datos de Contacto</h2>
+
+                <div class="form-group">
+                    <label for="nombre_contacto">Nombre completo *</label>
+                    <input type="text" id="nombre_contacto" name="nombre_contacto" required minlength="2" maxlength="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email corporativo *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="empresa">Empresa *</label>
+                    <input type="text" id="empresa" name="empresa" required minlength="2" maxlength="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="cargo">Cargo</label>
+                    <input type="text" id="cargo" name="cargo" maxlength="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="tamano">Tamano de la empresa *</label>
+                    <select id="tamano" name="tamano" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="micro_pyme">Micro/Pyme (1-49 empleados)</option>
+                        <option value="mediana">Mediana (50-199 empleados)</option>
+                        <option value="grande">Grande (200+ empleados)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="sector">Sector *</label>
+                    <select id="sector" name="sector" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="fintech">Fintech / Financiero</option>
+                        <option value="salud">Salud</option>
+                        <option value="retail">Retail / Comercio</option>
+                        <option value="educacion">Educacion</option>
+                        <option value="servicios">Servicios</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- DIMENSION 1: GOBERNANZA -->
+            <div class="card">
+                <div class="dimension peso-muy-alto">
+                    <div class="dimension-title">Dimension 1: Gobernanza y Responsabilidad</div>
+                    <div class="dimension-weight">Peso: MUY ALTO</div>
+
+                    <div class="form-group">
+                        <label>1. Existe un responsable formal de proteccion de datos en la organizacion? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p1_1" value="0" required> Si, claramente definido</label>
+                            <label><input type="radio" name="p1_1" value="5"> Existe informalmente</label>
+                            <label><input type="radio" name="p1_1" value="15"> No existe</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>2. La alta direccion esta involucrada en decisiones sobre datos? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p1_2" value="0" required> Si, regularmente</label>
+                            <label><input type="radio" name="p1_2" value="5"> Solo en casos puntuales</label>
+                            <label><input type="radio" name="p1_2" value="10"> No</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>3. Existen lineamientos internos claros sobre el uso de datos? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p1_3" value="0" required> Si, documentados y conocidos</label>
+                            <label><input type="radio" name="p1_3" value="5"> Parciales o poco conocidos</label>
+                            <label><input type="radio" name="p1_3" value="10"> No existen</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIMENSION 2: BASES LEGALES -->
+            <div class="card">
+                <div class="dimension peso-muy-alto">
+                    <div class="dimension-title">Dimension 2: Bases Legales y Transparencia</div>
+                    <div class="dimension-weight">Peso: MUY ALTO</div>
+
+                    <div class="form-group">
+                        <label>4. Pueden justificar por que usan los datos que recolectan? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p2_1" value="0" required> Si, claramente</label>
+                            <label><input type="radio" name="p2_1" value="10"> En algunos casos</label>
+                            <label><input type="radio" name="p2_1" value="20"> No</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>5. El consentimiento de los usuarios es explicito y demostrable? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p2_2" value="0" required> Si</label>
+                            <label><input type="radio" name="p2_2" value="10"> No siempre / no documentado</label>
+                            <label><input type="radio" name="p2_2" value="15"> No</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>6. Las personas saben para que se usan sus datos? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p2_3" value="0" required> Si, claramente</label>
+                            <label><input type="radio" name="p2_3" value="5"> Mas o menos</label>
+                            <label><input type="radio" name="p2_3" value="10"> No</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIMENSION 3: PROCESOS -->
+            <div class="card">
+                <div class="dimension peso-alto">
+                    <div class="dimension-title">Dimension 3: Procesos Operativos</div>
+                    <div class="dimension-weight">Peso: ALTO</div>
+
+                    <div class="form-group">
+                        <label>7. Tienen un proceso para responder solicitudes de acceso o eliminacion de datos? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p3_1" value="0" required> Si</label>
+                            <label><input type="radio" name="p3_1" value="5"> Parcial / informal</label>
+                            <label><input type="radio" name="p3_1" value="15"> No</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>8. Saben cuanto tiempo conservan los datos personales? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p3_2" value="0" required> Si</label>
+                            <label><input type="radio" name="p3_2" value="5"> Para algunos datos</label>
+                            <label><input type="radio" name="p3_2" value="10"> No</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>9. Que pasa si ocurre una filtracion de datos? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p3_3" value="0" required> Tenemos un procedimiento definido</label>
+                            <label><input type="radio" name="p3_3" value="10"> Se resolveria "sobre la marcha"</label>
+                            <label><input type="radio" name="p3_3" value="15"> No se ha pensado</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIMENSION 4: TECNOLOGIA -->
+            <div class="card">
+                <div class="dimension peso-medio">
+                    <div class="dimension-title">Dimension 4: Tecnologia y Seguridad</div>
+                    <div class="dimension-weight">Peso: MEDIO</div>
+
+                    <div class="form-group">
+                        <label>10. Los accesos a datos personales estan controlados? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p4_1" value="0" required> Si</label>
+                            <label><input type="radio" name="p4_1" value="5"> Parcialmente</label>
+                            <label><input type="radio" name="p4_1" value="10"> No</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>11. Las herramientas externas que usan datos personales tienen contratos claros? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p4_2" value="0" required> Si, con contratos claros</label>
+                            <label><input type="radio" name="p4_2" value="10"> Si, pero sin claridad contractual</label>
+                            <label><input type="radio" name="p4_2" value="10"> No estoy seguro</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIMENSION 5: CULTURA -->
+            <div class="card">
+                <div class="dimension peso-medio">
+                    <div class="dimension-title">Dimension 5: Cultura y Conciencia</div>
+                    <div class="dimension-weight">Peso: MEDIO</div>
+
+                    <div class="form-group">
+                        <label>12. En la organizacion saben que el mal uso de datos puede generar sanciones? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p5_1" value="0" required> Si</label>
+                            <label><input type="radio" name="p5_1" value="5"> Algunas personas</label>
+                            <label><input type="radio" name="p5_1" value="10"> No</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>13. Se ha capacitado al equipo en proteccion de datos? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="p5_2" value="0" required> Si</label>
+                            <label><input type="radio" name="p5_2" value="5"> Parcialmente</label>
+                            <label><input type="radio" name="p5_2" value="10"> Nunca</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="text-align: center;">
+                <button type="submit" class="btn btn-primary btn-block">Obtener mi Diagnostico</button>
+                <p style="margin-top: 12px; font-size: 0.85rem; color: var(--gray);">
+                    Recibiras un reporte PDF personalizado con tus resultados por email.
+                </p>
+            </div>
+        </form>
+    </div>
+
+    <div style="text-align: center; padding: 20px; color: var(--gray); font-size: 0.8rem;">
+        &copy; 2026 The Wise Monkey Project. Diagnostico orientativo - no constituye auditoria legal.
+    </div>
+</body>
+</html>

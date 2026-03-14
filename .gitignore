@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+.env
+data/ley21719.db
+data/reports/
+*.db-journal
+.DS_Store
+data/prospectos_ley21719.csv
+EMAILS_TANDA*.md
+docs/CONTACTOS_PROSPECCION.md

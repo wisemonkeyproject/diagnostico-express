@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: ley21719-diagnostico
+    runtime: docker
+    plan: free
+    envVars:
+      - key: OUTLOOK_EMAIL
+        sync: false
+      - key: OUTLOOK_PASSWORD
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CALENDLY_URL
+        sync: false
+      - key: DIAGNOSTICO_URL
+        sync: false
+    disk:
+      name: data
+      mountPath: /app/data
+      sizeGB: 1

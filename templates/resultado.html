@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados - Diagnostico Express | Ley 21.719</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>The Wise Monkey Project</h1>
+            <span class="badge">Resultados</span>
+        </div>
+    </div>
+
+    <div class="container">
+        {% set risk_class = 'alto' if result.nivel_riesgo.value == 'ALTO RIESGO' else ('medio' if result.nivel_riesgo.value == 'RIESGO MEDIO' else 'bajo') %}
+
+        <div class="result-banner {{ risk_class }}">
+            <h2>{{ result.nivel_riesgo.value }}</h2>
+            <p>Score Global: {{ result.score_total }}/{{ result.score_max }} ({{ result.score_normalizado }}%)</p>
+        </div>
+
+        {% if result.gatillos_activados %}
+        <div class="card" style="border-left: 4px solid var(--danger);">
+            <h2 style="color: var(--danger);">Alertas Criticas</h2>
+            <ul>
+                {% for gatillo in result.gatillos_activados %}
+                <li style="margin-bottom: 6px;">{{ gatillo }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <div class="card">
+            <h2>Score por Dimension</h2>
+            {% for dim in result.dimensiones %}
+            <div style="margin-bottom: 14px;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                    <strong>{{ dim.nombre }}</strong>
+                    <span style="color: var(--gray);">{{ dim.score }}/{{ dim.score_max }} ({{ dim.porcentaje }}%)</span>
+                </div>
+                <div class="progress-bar">
+                    {% set bar_color = 'var(--danger)' if dim.porcentaje > 45 else ('var(--warning)' if dim.porcentaje > 20 else 'var(--success)') %}
+                    <div class="fill" style="width: {{ dim.porcentaje }}%; background: {{ bar_color }};"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if result.brechas_principales %}
+        <div class="card">
+            <h2>Principales Brechas Identificadas</h2>
+            <ol>
+                {% for brecha in result.brechas_principales %}
+                <li style="margin-bottom: 8px;">{{ brecha }}</li>
+                {% endfor %}
+            </ol>
+        </div>
+        {% endif %}
+
+        <div class="card">
+            <h2>Exposicion Financiera Estimada</h2>
+            <p style="font-size: 1.1rem; font-weight: 600;">{{ result.estimacion_exposicion }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Recomendacion</h2>
+            <p>{{ result.recomendacion }}</p>
+        </div>
+
+        <div class="card" style="text-align: center; background: var(--dark); color: var(--white);">
+            <h2 style="color: var(--white);">Siguiente Paso</h2>
+            <p style="margin-bottom: 16px;">Agenda una conversacion de 30 minutos para revisar tus resultados y definir proximos pasos.</p>
+            <a href="{{ calendly_url }}" class="btn btn-primary" target="_blank">Agendar Conversacion</a>
+        </div>
+
+        <div class="card" style="background: #e8f4fd; border: 1px solid #bee5eb;">
+            <p>Hemos enviado el reporte completo en PDF a <strong>{{ result.email }}</strong>.</p>
+            <p style="font-size: 0.85rem; color: var(--gray); margin-top: 8px;">
+                Si no lo ves en tu bandeja, revisa la carpeta de spam.
+            </p>
+        </div>
+    </div>
+
+    <div style="text-align: center; padding: 20px; color: var(--gray); font-size: 0.8rem;">
+        &copy; 2026 The Wise Monkey Project. Diagnostico orientativo - no constituye auditoria legal.
+    </div>
+</body>
+</html>

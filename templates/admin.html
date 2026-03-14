@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Ley 21.719 Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="container-wide">
+            <h1>Admin Dashboard</h1>
+            <span class="badge">Ley 21.719</span>
+        </div>
+    </div>
+
+    <div class="container-wide">
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="number">{{ stats.total }}</div>
+                <div class="label">Diagnosticos</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" style="color: var(--danger);">{{ stats.alto }}</div>
+                <div class="label">Alto Riesgo</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" style="color: var(--warning);">{{ stats.medio }}</div>
+                <div class="label">Riesgo Medio</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" style="color: var(--success);">{{ stats.bajo }}</div>
+                <div class="label">Bajo Riesgo</div>
+            </div>
+        </div>
+
+        {% if campaign_stats %}
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="number">{{ campaign_stats.total }}</div>
+                <div class="label">Emails Campana</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" style="color: var(--primary);">{{ campaign_stats.sent }}</div>
+                <div class="label">Enviados</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" style="color: var(--gray);">{{ campaign_stats.pending }}</div>
+                <div class="label">Pendientes</div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Filters -->
+        <div class="card">
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <strong>Filtrar:</strong>
+                <a href="/admin" class="btn {% if not filter %}btn-primary{% endif %}" style="padding: 6px 14px; font-size: 0.85rem;">Todos</a>
+                <a href="/admin?filter=ALTO RIESGO" class="btn {% if filter == 'ALTO RIESGO' %}btn-danger{% endif %}" style="padding: 6px 14px; font-size: 0.85rem;">Alto Riesgo</a>
+                <a href="/admin?filter=RIESGO MEDIO" class="btn {% if filter == 'RIESGO MEDIO' %}btn-primary{% endif %}" style="padding: 6px 14px; font-size: 0.85rem;">Riesgo Medio</a>
+                <a href="/admin?filter=BAJO RIESGO" class="btn {% if filter == 'BAJO RIESGO' %}btn-success{% endif %}" style="padding: 6px 14px; font-size: 0.85rem;">Bajo Riesgo</a>
+            </div>
+        </div>
+
+        <!-- Leads table -->
+        <div class="card">
+            <h2>Diagnosticos ({{ diagnosticos|length }})</h2>
+            {% if diagnosticos %}
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Empresa</th>
+                            <th>Contacto</th>
+                            <th>Sector</th>
+                            <th>Score</th>
+                            <th>Nivel</th>
+                            <th>Gatillos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for d in diagnosticos %}
+                        <tr>
+                            <td>{{ d.created_at[:10] if d.created_at else '-' }}</td>
+                            <td><strong>{{ d.empresa }}</strong></td>
+                            <td>{{ d.nombre_contacto }}<br><span style="font-size:0.8rem;color:var(--gray);">{{ d.email }}</span></td>
+                            <td>{{ d.sector }}</td>
+                            <td>{{ d.score_normalizado }}%</td>
+                            <td>
+                                {% if d.nivel_riesgo == 'ALTO RIESGO' %}
+                                <span class="risk-alto">ALTO</span>
+                                {% elif d.nivel_riesgo == 'RIESGO MEDIO' %}
+                                <span class="risk-medio">MEDIO</span>
+                                {% else %}
+                                <span class="risk-bajo">BAJO</span>
+                                {% endif %}
+                            </td>
+                            <td style="font-size:0.8rem;">
+                                {% set gatillos = d.gatillos_activados if d.gatillos_activados is string and d.gatillos_activados != '[]' else '' %}
+                                {{ gatillos[:50] + '...' if gatillos|length > 50 else gatillos }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p style="color: var(--gray); text-align: center; padding: 30px;">No hay diagnosticos registrados aun.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
