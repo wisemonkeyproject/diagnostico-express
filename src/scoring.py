@@ -19,7 +19,7 @@ QUESTION_LABELS = {
     "q2": "Control de Acceso",
     "q3": "Proteccion Tecnica",
     "q4": "Flujo de Datos",
-    "q5": "Preparacion Ley 21.719",
+    "q5": "Consentimiento y Derechos ARCOP",
     "q6": "Capacitacion",
     "q7": "Respuesta a Incidentes",
 }
@@ -30,7 +30,7 @@ KA_MAPPING: dict[str, KnowledgeArea] = {
     "q2": KnowledgeArea.SECURITY,
     "q3": KnowledgeArea.SECURITY,
     "q4": KnowledgeArea.INTEGRATION,
-    "q5": KnowledgeArea.GOVERNANCE,
+    "q5": KnowledgeArea.INTEGRATION,
     "q6": KnowledgeArea.GOVERNANCE,
     "q7": KnowledgeArea.SECURITY,
 }

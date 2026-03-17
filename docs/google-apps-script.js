@@ -24,7 +24,7 @@ function doPost(e) {
         "Timestamp", "Nombre", "Email", "Empresa", "Cargo",
         "Tamano", "Sector",
         "Q1 Gobernanza", "Q2 Acceso", "Q3 Proteccion", "Q4 Flujos",
-        "Q5 Ley", "Q6 Capacitacion", "Q7 Incidentes",
+        "Q5 Consentimiento/ARCOP", "Q6 Capacitacion", "Q7 Incidentes",
         "Score %", "Nivel", "Area Critica", "KAs Sugeridas",
         "KA Governance %", "KA Security %", "KA Integration %",
         "Estado Lead"
@@ -202,7 +202,7 @@ function enviarNotificacion(data) {
     + '<td style="padding:2px 0 2px 16px;color:#6c757d;">Q2 Acceso</td><td style="font-weight:600;">' + (data.q2 != null ? data.q2 : "-") + '/4</td></tr>'
     + '<tr><td style="padding:2px 0;color:#6c757d;">Q3 Proteccion</td><td style="font-weight:600;">' + (data.q3 != null ? data.q3 : "-") + '/4</td>'
     + '<td style="padding:2px 0 2px 16px;color:#6c757d;">Q4 Flujos</td><td style="font-weight:600;">' + (data.q4 != null ? data.q4 : "-") + '/4</td></tr>'
-    + '<tr><td style="padding:2px 0;color:#6c757d;">Q5 Ley 21.719</td><td style="font-weight:600;">' + (data.q5 != null ? data.q5 : "-") + '/4</td>'
+    + '<tr><td style="padding:2px 0;color:#6c757d;">Q5 Consentimiento/ARCOP</td><td style="font-weight:600;">' + (data.q5 != null ? data.q5 : "-") + '/4</td>'
     + '<td style="padding:2px 0 2px 16px;color:#6c757d;">Q6 Capacitacion</td><td style="font-weight:600;">' + (data.q6 != null ? data.q6 : "-") + '/4</td></tr>'
     + '<tr><td style="padding:2px 0;color:#6c757d;">Q7 Incidentes</td><td style="font-weight:600;">' + (data.q7 != null ? data.q7 : "-") + '/4</td>'
     + '<td></td><td></td></tr>'
