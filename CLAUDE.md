@@ -11,7 +11,7 @@ Plataforma de prospeccion comercial para servicios DRA (Data Readiness Assessmen
 - Quick-Scan DRA live en GitHub Pages
 - Google Apps Script deployado (v2, email HTML con CTAs)
 - 106 contactos con email listos para contactar
-- Secuencia de 4 emails con valores reales configurados
+- Secuencia de 7 emails (35 dias) con valores reales configurados
 - Checkbox de consentimiento de datos (Ley 21.719 compliant)
 
 ### URLs en Produccion
@@ -48,7 +48,7 @@ Plataforma de prospeccion comercial para servicios DRA (Data Readiness Assessmen
 ### Archivos Principales
 - `docs/Netlify/index.html` - Formulario Quick-Scan DRA (version local, sincronizada con GitHub repo)
 - `docs/google-apps-script.js` - Apps Script v2 (22 columnas, email HTML con CTAs, urgencia por nivel)
-- `docs/EMAIL_SEQUENCE_LEY21719.md` - Secuencia 4 emails con valores reales (link, WhatsApp, firma)
+- `docs/EMAIL_SEQUENCE_LEY21719.md` - Secuencia 7 emails (35 dias) con valores reales (link, WhatsApp, firma)
 - `docs/CONTACTOS_PROSPECCION.md` - 106 contactos con email por sector, con columna de estado
 
 ### Archivos Backend (referencia)

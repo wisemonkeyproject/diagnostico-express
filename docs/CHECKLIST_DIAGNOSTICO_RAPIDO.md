@@ -306,13 +306,13 @@ Identificar las 3 areas mas criticas (score 0-1):
 
 ```
 "Tu score de {X}/20 indica brechas significativas. Recomiendo un
-diagnostico completo de 4-6 semanas para:
+DRA Assessment de 3 semanas para:
 
-1. Mapear todos tus procesos de datos
-2. Crear tu registro de actividades de tratamiento
-3. Disenar un roadmap de implementacion priorizado
+1. Evaluar tu madurez en gobernanza, seguridad e integracion de datos
+2. Crear tu registro de actividades de tratamiento (RAT)
+3. Disenar un roadmap de adecuacion priorizado en 3 fases
 
-Inversion: ${rango} USD
+Inversion: $1.5M - $3M CLP, 100% remoto
 Timeline: Empezar en las proximas 2 semanas
 
 Quieres que te prepare una propuesta formal?"

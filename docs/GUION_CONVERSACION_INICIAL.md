@@ -8,7 +8,7 @@
 
 1. **Calificar** si el prospecto tiene necesidad real
 2. **Entender** su situacion actual de datos
-3. **Ofrecer** diagnostico rapido gratuito (si califica)
+3. **Ofrecer** Quick-Scan DRA gratuito (si no lo han hecho) o DRA Assessment (si ya lo hicieron)
 4. **Agendar** siguiente paso
 
 ---
@@ -164,14 +164,32 @@ Eso significa requisitos adicionales de consentimiento y seguridad."
 que ciertas empresas designen un DPO formal."
 ```
 
-### Ofrecer Diagnostico Rapido
+### Si NO han hecho el Quick-Scan
 
 ```
-"Te propongo algo: hagamos un diagnostico rapido de 30 minutos,
-sin costo, donde revisamos 10 puntos clave de cumplimiento.
+"Te propongo algo: tenemos un Quick-Scan DRA online, gratuito, que
+en 2 minutos te muestra tu nivel de madurez en gobernanza, seguridad
+e integracion de datos.
 
-Al final, te doy un score de 0 a 10, identificamos las 3 brechas
-principales, y estimas el riesgo real.
+Te mando el link ahora mismo, lo completas, y con esos resultados
+podemos conversar con datos concretos sobre tu situacion.
+
+→ https://wisemonkeyproject.github.io/diagnostico-express/"
+```
+
+### Si YA hicieron el Quick-Scan (o si califican directo)
+
+```
+"Basado en lo que me cuentas, lo que necesitas es un DRA Assessment
+completo. En 3 semanas, con 3 entrevistas de 45 minutos, te
+entregamos:
+
+- Tu score de madurez por area (Gobernanza, Seguridad, Integracion)
+- Gap analysis: donde estas vs donde necesitas estar para la ley
+- Roadmap priorizado con quick wins implementables en semanas
+- Template RAT pre-poblado con ejemplos de tu sector
+
+Inversion: entre $1.5M y $3M CLP, 100% remoto.
 
 Te sirve?"
 ```
@@ -180,33 +198,39 @@ Te sirve?"
 
 ## BLOQUE 4: Cierre (2 min)
 
-### Si Acepta el Diagnostico
+### Si Acepta el DRA Assessment
 
 ```
-"Excelente. Que te parece si agendamos 30 minutos la proxima semana?
+"Excelente. Te envio la propuesta formal esta semana con el detalle
+de entregables y timeline.
 
-Necesito que tengas a mano:
+Mientras tanto, te pido que tengas a mano:
 - Acceso a tu sitio web (para revisar politica de privacidad)
 - Una idea general de que sistemas almacenan datos de clientes
 
-Te mando una invitacion con un checklist de preparacion."
+Empezamos con un Pre-Assessment Worksheet y en 3 semanas tienes
+tu diagnostico completo."
 ```
 
-**Accion:** Agendar inmediatamente. Enviar calendario.
+**Accion:** Enviar propuesta formal (TEMPLATE_PROPUESTA_LEY21719.md). Agendar kick-off.
 
 ---
 
 ### Si Dice "Dejame Pensarlo"
 
 ```
-"Entiendo. Te dejo una propuesta: te mando por email un checklist
-de los 10 puntos que la ley exige. Lo revisas internamente, y si
-ven que tienen brechas, me escribes.
+"Entiendo. Te dejo dos cosas:
 
-Sin presion. El checklist es util aunque no trabajemos juntos."
+1. El Quick-Scan DRA online — 2 minutos, gratuito, resultados
+   inmediatos: wisemonkeyproject.github.io/diagnostico-express
+
+2. Un checklist de los 10 puntos que la ley exige para que lo
+   revisen internamente.
+
+Sin presion. Ambos son utiles aunque no trabajemos juntos."
 ```
 
-**Accion:** Enviar CHECKLIST_DIAGNOSTICO_RAPIDO.md al dia siguiente
+**Accion:** Enviar link Quick-Scan + CHECKLIST_DIAGNOSTICO_RAPIDO.md al dia siguiente
 
 ---
 
@@ -262,9 +286,9 @@ Exito con la preparacion!"
 ### "Todavia falta tiempo"
 
 ```
-"Faltan 309 dias. Suena a mucho, pero prepararse bien toma 4-6 meses.
-Y la mayoria de las empresas van a esperar al ultimo momento.
-Los que se preparan ahora, van a tener ventaja."
+"Faltan menos de 9 meses. Suena a mucho, pero prepararse bien toma
+4-6 meses. Y la mayoria de las empresas van a esperar al ultimo
+momento. Los que se preparan ahora, van a tener ventaja."
 ```
 
 ### "Ya tenemos abogados"
@@ -278,15 +302,15 @@ Son complementarios, no competencia."
 ### "Es muy caro"
 
 ```
-"El diagnostico rapido es gratuito. Si despues decidimos hacer algo
-mas profundo, hablamos de $5K-$15K dependiendo del tamano.
-Comparado con una multa de $350K, es una fraccion."
+"El Quick-Scan es gratuito. Si despues decidimos hacer el DRA
+Assessment completo, hablamos de $1.5M-$3M CLP dependiendo del
+tamano. Comparado con una multa minima de $350K USD, es una fraccion."
 ```
 
 ### "No tenemos presupuesto"
 
 ```
-"Entiendo. El diagnostico rapido no tiene costo. Te sirve para saber
+"Entiendo. El Quick-Scan DRA no tiene costo. Te sirve para saber
 donde estan. Despues, si hay presupuesto el proximo trimestre,
 tenemos el roadmap listo."
 ```
@@ -299,11 +323,11 @@ Inmediatamente despues de colgar:
 
 - [ ] Clasificar lead (HOT/WARM/COLD)
 - [ ] Actualizar CRM con notas
-- [ ] Si HOT: enviar invitacion calendario para diagnostico
-- [ ] Si WARM: programar email de seguimiento
+- [ ] Si HOT: enviar propuesta formal + agendar kick-off
+- [ ] Si WARM: enviar Quick-Scan DRA + programar email de seguimiento
 - [ ] Si COLD: archivar con razon
 
 ---
 
-*Creado: 2026-01-27*
+*Actualizado: 2026-03-17 | Alineado con DRA Framework v1.0*
 *The Wise Monkey Project*

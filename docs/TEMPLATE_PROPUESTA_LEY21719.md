@@ -58,49 +58,58 @@
 
 ### Diagnostico de Cumplimiento Ley 21.719
 
-Un proyecto de consultoria de {SEMANAS} semanas para llevar a {EMPRESA} de un score de {X}/20 a un roadmap claro de cumplimiento.
+Un proyecto de consultoria de 3 semanas para llevar a {EMPRESA} de su estado actual a un roadmap claro de cumplimiento.
 
 ### Alcance
 
 ```
-Semana 1-2: DISCOVERY
-├── Entrevistas con stakeholders clave ({N} sesiones)
-├── Identificacion de procesos que manejan datos personales
+Semana 0: PREPARACION
+├── Onboarding + NDA
+├── Envio de Pre-Assessment Worksheet al cliente
 └── Revision de documentacion existente
 
-Semana 2-3: MAPEO
-├── Mapeo de procesos de datos (bajo metodologia PCF)
-├── Inventario completo de datos personales
-└── Identificacion de bases de legitimidad
+Semana 1: DISCOVERY + ENTREVISTAS
+├── Entrevista Data Governance (45 min)
+├── Entrevista Data Security (45 min)
+├── Entrevista Data Integration (45 min)
+└── Inventario de datos y sistemas
 
-Semana 3-4: ANALISIS
-├── Gap analysis vs requisitos Ley 21.719
+Semana 2: ANALISIS + SCORING
+├── Scoring de madurez CMM 0-5 por KA y subdimension
+├── Gap analysis vs requisitos Ley 21.719 (Current vs Target Profile)
 ├── Evaluacion de riesgos priorizada
 └── Identificacion de quick wins
 
-Semana 4-{SEMANAS}: ENTREGA
-├── Informe ejecutivo para directivos
-├── Roadmap de implementacion detallado
-└── Presentacion final
+Semana 3: ENTREGABLES + PRESENTACION
+├── Reporte ejecutivo DRA
+├── Roadmap de adecuacion en 3 fases
+├── Presentacion final al equipo directivo (60 min)
+└── Entrega de 7 documentos listos para implementar
 ```
 
 ### Entregables
 
-| #   | Entregable                         | Descripcion                                                                                    |
-| --- | ---------------------------------- | ---------------------------------------------------------------------------------------------- |
-| 1   | **Mapa de procesos de datos**      | Todos los procesos de {EMPRESA} que tratan datos personales, clasificados bajo metodologia PCF |
-| 2   | **Inventario de datos personales** | Que datos tienen, donde estan, para que se usan, con quien se comparten                        |
-| 3   | **Informe de brechas**             | Comparacion estado actual vs requisitos especificos de la Ley 21.719                           |
-| 4   | **Matriz de riesgos**              | Riesgos priorizados por probabilidad e impacto, con estimacion financiera                      |
-| 5   | **Roadmap de implementacion**      | Plan de accion con quick wins (30 dias), corto plazo (90 dias) y mediano plazo (180 dias)      |
+| #   | Entregable                                | Descripcion                                                                                      |
+| --- | ----------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| 1   | **Reporte Ejecutivo DRA**                 | Score de madurez CMM (0-5) por area, brechas criticas, riesgo financiero cuantificado, quick wins |
+| 2   | **Matriz de Gap Analysis**                | Current vs Target por KA y subdimension, mapeado a 10 obligaciones de la Ley 21.719              |
+| 3   | **Roadmap de Adecuacion (3 fases)**       | Quick wins (0-3 meses), acciones core (3-6 meses), mejora continua (6-12 meses) con responsables |
+| 4   | **Template RAT Pre-Poblado**              | Registro de Actividades de Tratamiento con ejemplos tipicos de su sector (9 columnas formato SGD) |
+| 5   | **Inventario de Datos Validado**          | Inventario completo de sistemas, datos, terceros y flujos de datos de {EMPRESA}                  |
+| 6   | **Guia AIPD Simplificada** (si aplica)    | Arbol de decision + metodologia de evaluacion de impacto para tratamientos de alto riesgo         |
+| 7   | **Benchmarks de Retencion por Sector**    | Periodos de conservacion por tipo de dato basados en normativa chilena vigente                    |
 
 ### Metodologia
 
-Este proyecto utiliza **ProcessAI**, nuestra metodologia propietaria de consultoria aumentada que permite:
+Este proyecto utiliza el **Data Readiness Assessment (DRA)**, basado en 3 frameworks internacionales:
 
-- Mapeo de procesos a nivel de detalle APQC L3-L4
-- Hipotesis visionarias basadas en patrones de industria
-- Reportes ejecutivos listos para presentar a directorio
+- **DAMA-DMBOK2** — QUE evaluar: 3 Knowledge Areas clave (Governance, Security, Integration)
+- **NIST Privacy Framework** — CONTRA QUE comparar: Current Profile vs Target Profile
+- **CMM/CMMI** — COMO medir: scoring de madurez 0-5 con criterios observables
+
+Evaluacion en 3 KAs x 5 subdimensiones (roles, procesos, herramientas, calidad, riesgos) = **15 puntos de evaluacion**.
+
+**Alineado con las 10 recomendaciones de la WikiGuia del Gobierno Digital** (95% de cobertura).
 
 ---
 
@@ -110,9 +119,11 @@ Este proyecto utiliza **ProcessAI**, nuestra metodologia propietaria de consulto
 
 | Concepto                        | Valor                 |
 | ------------------------------- | --------------------- |
-| **Diagnostico de Cumplimiento** | ${PRECIO} USD         |
-| **Duracion**                    | {SEMANAS} semanas     |
-| **Sesiones con cliente**        | {N_SESIONES} sesiones |
+| **DRA Assessment Completo**     | $1.500.000 - $3.000.000 CLP |
+| **Duracion**                    | 3 semanas             |
+| **Sesiones con cliente**        | 3 entrevistas (45 min) + 1 presentacion (60 min) |
+| **Modalidad**                   | 100% remoto           |
+| **Entregables**                 | 7 documentos listos para implementar |
 
 ### Condiciones de Pago
 
@@ -166,13 +177,12 @@ ROI:                  {ROI_PERCENT}%
 
 ### Cronograma Propuesto
 
-| Semana    | Actividades                        | Entregable                |
-| --------- | ---------------------------------- | ------------------------- |
-| 1         | Kick-off + Entrevistas iniciales   | Alcance confirmado        |
-| 2         | Mapeo de procesos                  | Borrador mapa de procesos |
-| 3         | Inventario de datos + Gap analysis | Borrador inventario       |
-| 4         | Evaluacion de riesgos              | Borrador matriz riesgos   |
-| {SEMANAS} | Consolidacion + Presentacion       | **Entrega final**         |
+| Semana    | Actividades                                    | Entregable                          |
+| --------- | ---------------------------------------------- | ----------------------------------- |
+| 0         | Onboarding + Pre-Assessment Worksheet          | NDA firmado, documentacion recibida |
+| 1         | 3 entrevistas (Governance, Security, Integration) | Inventario de datos borrador     |
+| 2         | Scoring CMM + Gap Analysis + Roadmap           | Borrador reporte DRA                |
+| 3         | Consolidacion + Presentacion final (60 min)    | **6 entregables finales**           |
 
 ### Hitos Clave
 
@@ -191,8 +201,8 @@ ROI:                  {ROI_PERCENT}%
 
 **{TU_NOMBRE}**
 
-- Especialista en mapeo de procesos y transformacion digital
-- Metodologia ProcessAI (APQC PCF L3-L4)
+- Especialista en gestion de datos, procesos y transformacion digital
+- Metodologia DRA basada en DAMA-DMBOK2, NIST Privacy Framework y CMM/CMMI
 - Experiencia en proyectos de compliance y gobierno de datos
 
 ### Compromiso
@@ -230,7 +240,7 @@ Toda la informacion compartida durante el proyecto sera tratada como confidencia
 
 ### Propiedad Intelectual
 
-Los entregables del proyecto son propiedad de {EMPRESA} una vez pagados en su totalidad. La metodologia ProcessAI es propiedad de The Wise Monkey Project.
+Los entregables del proyecto son propiedad de {EMPRESA} una vez pagados en su totalidad. La metodologia DRA (Data Readiness Assessment) es propiedad de The Wise Monkey Project.
 
 ### Validez
 
@@ -252,5 +262,5 @@ Por la presente, {EMPRESA} acepta los terminos de esta propuesta.
 ---
 
 *Propuesta preparada por The Wise Monkey Project*
-*Potenciado por ProcessAI*
+*Basado en DRA (Data Readiness Assessment) — DAMA-DMBOK2, NIST PF, CMM/CMMI*
 *{FECHA}*
