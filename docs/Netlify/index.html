@@ -536,13 +536,21 @@
         }
         html += `</div>`;
 
-        // Critical area
-        html += `
-            <div class="card" style="border-left: 4px solid var(--danger);">
-                <h2 style="color: var(--danger);">Area Critica Identificada</h2>
-                <p style="font-weight:600; margin-bottom:8px;">${KA_NAMES[result.criticalKA]}</p>
-                <p>${CRITICAL_AREA_LABELS[result.criticalKA]}</p>
-            </div>`;
+        // Critical area (solo mostrar si hay brecha real)
+        if (result.percentage < 76) {
+            html += `
+                <div class="card" style="border-left: 4px solid var(--danger);">
+                    <h2 style="color: var(--danger);">Area Critica Identificada</h2>
+                    <p style="font-weight:600; margin-bottom:8px;">${KA_NAMES[result.criticalKA]}</p>
+                    <p>${CRITICAL_AREA_LABELS[result.criticalKA]}</p>
+                </div>`;
+        } else {
+            html += `
+                <div class="card" style="border-left: 4px solid var(--info);">
+                    <h2 style="color: var(--info);">Estado General</h2>
+                    <p>Su organizacion muestra buen nivel de madurez en las 3 Knowledge Areas evaluadas. Un DRA Assessment lite puede validar el cumplimiento y detectar oportunidades de mejora.</p>
+                </div>`;
+        }
 
         // Financial exposure
         html += `
